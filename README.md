@@ -1,5 +1,5 @@
 # js-html-css-snippets
-I decided to start this repository for people to get some easy access to usefull easy code snippets for their website building. All of it free for both personal and commercial, no attribution required.
+I decided to start this repository for people to get some easy access to usefull easy code snippets for their website building. All of it free for both personal and commercial, no attribution required (although appreciated). If you found any of this content usefull, please consider clicking the &#x2606; at the top of this page as a sign of appreciation.
 
 <ins>__Note on my coding style__</ins>
 
@@ -7,11 +7,99 @@ You might see that my coding style is less on the conventional side. My backgrou
 
 ## Table of Contents
 __JavaScript__
-- [Smart Random Number Generator](#js-intelligent-random-number-generator)
+- [Build Array from String](#js-build-array-from-string)
+- [Execute Functions from String Format](#js-execute-functions-from-string-format)
+- [Execute Function by String](#js-execute-function-by-string)
+- [Intelligent Random Number Generator](#js-intelligent-random-number-generator)
 - [Scroll Page to Location](#js-scroll-page-to-location)
 - [Simple Open URL](#js-simple-open-url)
 
 ## Code Snippets List
+
+### [JS] Build Array from String
+
+```javascript
+// Creates an array from a string keeping strings, booleans and numbers as they are
+// Example: 'John',4,true,'Smith'
+//					will return array:
+//						[0] String(John)
+//						[1] Number(4)
+//						[2] Boolean(true)
+//						[3] String(Smith)
+// Particularly usefull when wanting to create an arguments array from a string
+// Strings MUST be enclosed in single or double quotes which will be removed
+// Returns array. NOTE: returns empty array if string is empty. It WILL NOT return
+// an array with an empty string at index 0.
+function ArrayBuild(s_string, split_str = ",") {
+	var retval = [];
+	var atmp = s_string.split(split_str);
+	var ictr = 0;
+	
+	if (s_string != "") {
+		for (ictr = 0; ictr < atmp.length; ictr ++) {
+			// Detect strings by single or double quotes
+			if ((atmp[ictr].charAt(0) == "'" && atmp[ictr].charAt(atmp[ictr].length-1) == "'") || 
+			(atmp[ictr].charAt(0) == "\"" && atmp[ictr].charAt(atmp[ictr].length-1) == "\"")) {
+				// Add a string
+				retval.push(atmp[ictr].substr(1,atmp[ictr].length - 2));
+			} else {
+				// Detects boolean and number values
+				switch (atmp[ictr].toLowerCase()) {
+					case "true": retval.push(true); break;						// Add true boolean
+					case "false": retval.push(false); break;					// Add false boolean
+					default: retval.push(Number(atmp[ictr])); break;	// Add Number
+				}
+			}
+		}
+	}
+	
+	return retval;
+}
+```
+
+### [JS] Execute Functions from String Format
+
+```javascript
+// Executes functions safely from a string
+// Rules: functions separated by ";; ". Parameters separated by ",,".
+// Format: FunctionName,, Param1,, Param2;; FunctionName,, Param1,, etc...
+function ExecuteFunctions(FuncAndParams) {
+	var afuncs = [];			// List of functions
+	var aparams = [];			// List of function parameters
+	var ictr = 0;					// Function list looper
+	var ipos = 0;					// Parameter seperator position
+	var sparams = "";			// Function parameters string to be put as an array in aparams
+	var sfunc = "";				// Current function name in the loop
+	
+	afuncs = FuncAndParams.split(";; ");
+	
+	for (ictr = 0; ictr < afuncs.length; ictr ++) {
+		sparams = "";
+		// Check if there are any parameters
+		ipos = afuncs[ictr].indexOf(",, ");
+		if (ipos > 0) {
+			sfunc = afuncs[ictr].substr(0, ipos);		// Get function name
+			sparams = afuncs[ictr].substr(ipos+3);	// Get parameters
+		} else {sfunc = afuncs[ictr];}	// If no parameters, use current function string as function name
+		aparams = ArrayBuild(sparams,",, ");			// Build parameters array
+		ExecFunctionByString(sfunc,...aparams);		// Execute function
+	}
+	
+}
+```
+
+### [JS] Execute Function by String
+
+```javascript
+// Executes a function using it's string name
+function ExecFunctionByString(funcName, ...funcParams) {
+	var ofunc = window[funcName];
+	
+	if ((typeof ofunc).toLowerCase() === "function") {
+		ofunc.apply(undefined,funcParams);
+	}
+}
+```
 
 ### [JS] Intelligent Random Number Generator
 
