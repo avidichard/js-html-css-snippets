@@ -58,6 +58,8 @@ function ArrayBuild(s_string, split_str = ",") {
 
 ### [JS] Execute Functions from String Format
 
+__REQUIRED FUNCTION:__ [Build Array from String](#js-build-array-from-string)
+
 ```javascript
 // Executes functions safely from a string
 // Rules: functions separated by ";; ". Parameters separated by ",,".
