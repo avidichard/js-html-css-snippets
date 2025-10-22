@@ -59,7 +59,9 @@ function ArrayBuild(s_string, split_str = ",") {
 ### [JS] Execute Functions from String Format
 
 __REQUIRED FUNCTIONS:__
+
 [Build Array from String](#js-build-array-from-string)
+
 [Execute Function by String](#js-execute-function-by-string)
 
 ```javascript
