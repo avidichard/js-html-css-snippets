@@ -7,7 +7,7 @@ You might see that my coding style is less on the conventional side. My backgrou
 ## Table of Contents
 __JavaScript__
 - [Build Array from String](#js-build-array-from-string)
-- [Change an Element's Class by cycling through a Defined Class List](js-cycle-through-classes)
+- [Change an Element's Class by cycling through a Defined Class List](#js-cycle-through-classes)
 - [Execute Functions from String Format](#js-execute-functions-from-string-format)
 - [Execute Function by String](#js-execute-function-by-string)
 - [Intelligent Random Number Generator](#js-intelligent-random-number-generator)
