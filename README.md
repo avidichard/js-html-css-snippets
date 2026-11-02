@@ -61,32 +61,52 @@ function ArrayBuild(s_string, split_str = ",") {
 
 ```javascript
 // Changes an element's class with the next one in line
-//         elem: Usually "this" unless you have other needs for another element
-//     sClasses: space separated list of classes to cycle through. It will detect which class is currently set and move on to the next.
-//        bLoop: Default (true), loops back to first class from sClasses when last one is met. If set to false, bRemoveLast is taken into consideration.
-//  bRemoveLast: Default (false), if bLoop is set to false, this decides if the class should be removed from the element's class list (true) or kept (false)
-function cycleClass (elem, sClasses, bLoop = true, bRemoveLast = false) {
+//          oevent: Just write "event" without quotes, that's it. For stability.
+//            elem: The object to cycle the classes or one of the following 2 strings.
+//                  You can also use a string in the following formats to define other elements:
+//                  -  "tag:TagName": This will automatically detect which element called this function and choose the next element with this tag as the one to manipulate.
+//                      Ex: <div onclick="cycleClass('tag:p', 'cls1 cls2')"> <p id="p1" class="cls1"></p> <p id="p2" class="cls1"></p> </div>
+//                          This will switch the first p element from cls1 to cls2. It will NOT affect the others, just the first one encountered no matter if it's a direct child or nested.
+//                  - "id:ElementID": This will manipulate the classes of the document's element with ElementID
+//                  - Anything else will immediately exit the function (even an empty string).
+//        sClasses: space separated list of classes to cycle through. It will detect which class is currently set and move on to the next.
+//           bLoop: Default (true), loops back to first class from sClasses when last one is met. If set to false, bRemoveLast is taken into consideration.
+//     bRemoveLast: Default (false), if bLoop is set to false, this decides if the class should be removed from the element's class list (true) or kept (false)
+function cycleClass (oevent, elem, sClasses, bLoop = true, bRemoveLast = false) {
+	// Makes sure a valid element was passed
+	if (elem === null) {return;}
 	// If no classes is defined, this function is useless
 	if (sClasses == "") {return;}
 	// If there is just 1 class in sClasses and no removal is required then exit
-	if (sClasses.indexOf(" ") < 0 && bRemoveLast == false) {return;}
+	if (sClasses.indexOf(" ") < 0 && !bRemoveLast) {return;}
 	
+	var oelem = elem;
 	var acls = sClasses.split(" ");		// List of classes
 	var ictr = 0;											// Loop counter
 	var inext = -1;										// Array index of next class to add
+	var astr = [];
+	
+	if (typeof elem === "string") {
+		astr = elem.split(":");
+		switch (astr[0].toLowerCase()) {
+			case "tag": oelem = oevent.currentTarget.querySelector(astr[1]);break;
+			case "id": oelem = document.getElementById(astr[1]);break;
+			default: return;
+		}
+	}
 	
 	// Loop for all class names starting from the last one
 	for (ictr = acls.length -1; ictr >= 0; ictr --) {
-		if (elem.classList.contains(acls[ictr])) {
+		if (oelem.classList.contains(acls[ictr])) {
 			// Set next class to add
 			inext = ictr + 1;
 			if (inext > acls.length - 1) {inext = 0;}
 			// Remove the current class
-			if (bRemoveLast || bLoop) {elem.classList.remove(acls[ictr]);}
+			if (bRemoveLast || bLoop) {oelem.classList.remove(acls[ictr]);}
 			// Exit if no loop is required
 			if (inext == 0 && !bLoop) {return;}
 			// Add the next class and exit
-			elem.classList.add(acls[inext]);
+			oelem.classList.add(acls[inext]);
 			return;
 		}
 	}
