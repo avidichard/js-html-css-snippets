@@ -59,7 +59,7 @@ function ArrayBuild(s_string, split_str = ",") {
 
 ### [JS] Cycle Through Classes
 
-```
+```javascript
 // Changes an element's class with the next one in line
 //         elem: Usually "this" unless you have other needs for another element
 //     sClasses: space separated list of classes to cycle through. It will detect which class is currently set and move on to the next.
