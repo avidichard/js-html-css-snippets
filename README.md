@@ -7,6 +7,7 @@ You might see that my coding style is less on the conventional side. My backgrou
 ## Table of Contents
 __JavaScript__
 - [Build Array from String](#js-build-array-from-string)
+- [Change an Element's Class by cycling through a Defined Class List](js-cycle-through-classes)
 - [Execute Functions from String Format](#js-execute-functions-from-string-format)
 - [Execute Function by String](#js-execute-function-by-string)
 - [Intelligent Random Number Generator](#js-intelligent-random-number-generator)
@@ -53,6 +54,43 @@ function ArrayBuild(s_string, split_str = ",") {
 	}
 	
 	return retval;
+}
+```
+
+### [JS] Cycle Through Classes
+
+```
+// Changes an element's class with the next one in line
+//         elem: Usually "this" unless you have other needs for another element
+//     sClasses: space separated list of classes to cycle through. It will detect which class is currently set and move on to the next.
+//        bLoop: Default (true), loops back to first class from sClasses when last one is met. If set to false, bRemoveLast is taken into consideration.
+//  bRemoveLast: Default (false), if bLoop is set to false, this decides if the class should be removed from the element's class list (true) or kept (false)
+function cycleClass (elem, sClasses, bLoop = true, bRemoveLast = false) {
+	// If no classes is defined, this function is useless
+	if (sClasses == "") {return;}
+	// If there is just 1 class in sClasses and no removal is required then exit
+	if (sClasses.indexOf(" ") < 0 && bRemoveLast == false) {return;}
+	
+	var acls = sClasses.split(" ");		// List of classes
+	var ictr = 0;											// Loop counter
+	var inext = -1;										// Array index of next class to add
+	
+	// Loop for all class names starting from the last one
+	for (ictr = acls.length -1; ictr >= 0; ictr --) {
+		if (elem.classList.contains(acls[ictr])) {
+			// Set next class to add
+			inext = ictr + 1;
+			if (inext > acls.length - 1) {inext = 0;}
+			// Remove the current class
+			if (bRemoveLast || bLoop) {elem.classList.remove(acls[ictr]);}
+			// Exit if no loop is required
+			if (inext == 0 && !bLoop) {return;}
+			// Add the next class and exit
+			elem.classList.add(acls[inext]);
+			return;
+		}
+	}
+	
 }
 ```
 
