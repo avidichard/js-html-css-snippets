@@ -63,9 +63,8 @@ function ArrayBuild(s_string, split_str = ",") {
 // Changes an element's class with the next one in line
 //          oevent: Just write "event" without quotes, that's it. For stability.
 //            elem: The object to cycle the classes or one of the following 2 strings.
-//                  You can also use a string in the following formats to define other elements:
-//                  -  "tag:TagName": This will automatically detect which element called this function and choose the next element with this tag as the one to manipulate.
-//                      Ex: <div onclick="cycleClass('tag:p', 'cls1 cls2')"> <p id="p1" class="cls1"></p> <p id="p2" class="cls1"></p> </div>
+//                  -  "tag:TagName": This will automatically detect which element called this function and choose the next element with TagName as the one to manipulate.
+//                      Ex: <div onclick="cycleClass(event, 'tag:p', 'cls1 cls2')"> <p id="p1" class="cls1"></p> <p id="p2" class="cls1"></p> </div>
 //                          This will switch the first p element from cls1 to cls2. It will NOT affect the others, just the first one encountered no matter if it's a direct child or nested.
 //                  - "id:ElementID": This will manipulate the classes of the document's element with ElementID
 //                  - Anything else will immediately exit the function (even an empty string).
