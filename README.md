@@ -93,7 +93,10 @@ function cycleClass (oevent, elem, sClasses, bLoop = true, bRemoveLast = false) 
 			default: return;
 		}
 	}
-	
+
+	// Make sure an element is targeted or else exit
+	if (oelem === null || oelem === undefined) {return;}
+
 	// Loop for all class names starting from the last one
 	for (ictr = acls.length -1; ictr >= 0; ictr --) {
 		if (oelem.classList.contains(acls[ictr])) {
